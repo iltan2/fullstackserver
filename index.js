@@ -4,6 +4,7 @@ const app = express();
 const cors = require('cors')
 
 app.use(cors())
+app.use(express.static('build'))
 
 let persons = [
   {
@@ -45,9 +46,9 @@ morgan.token('post-data', (req, res) => {
 const myFormat = ':method :url :status :response-time ms :post-data'
 app.use(morgan(myFormat))
 
-app.get("/", (request, response) => {
-  response.send("<h1>Hello world!</h1>");
-});
+// app.get("/", (request, response) => {
+//   response.send("<h1>Hello world!</h1>");
+// });
 
 app.get("/api/persons", (request, response) => {
   response.json(persons);
