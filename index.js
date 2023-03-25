@@ -1,6 +1,9 @@
 const express = require("express");
 const morgan = require("morgan")
 const app = express();
+const cors = require('cors')
+
+app.use(cors())
 
 let persons = [
   {
@@ -42,6 +45,9 @@ morgan.token('post-data', (req, res) => {
 const myFormat = ':method :url :status :response-time ms :post-data'
 app.use(morgan(myFormat))
 
+app.get("/", (request, response) => {
+  response.send("<h1>Hello world!</h1>");
+});
 
 app.get("/api/persons", (request, response) => {
   response.json(persons);
@@ -106,14 +112,15 @@ app.post("/api/persons", (request, response) => {
   };
   //console.log(person);
 
-  persons = persons.concat(person);
+  //persons = persons.concat(person);
 
-  response.json(persons);
+  //response.json(persons);
+  response.json(person);
 });
 
 app.use(unknownEndpoint)
 
-const PORT = 3001;
+const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
