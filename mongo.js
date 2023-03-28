@@ -36,7 +36,7 @@ const Person = mongoose.model("Person", personSchema);
 if (newName !== null && newNumber !== null) {
   const person = new Person({
     name: newName,
-    important: newNumber,
+    number: newNumber,
   });
 
   person.save().then((result) => {
