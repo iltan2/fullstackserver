@@ -48,12 +48,7 @@ app.get("/api/persons/:id", (request, response) => {
 
 app.post("/api/persons", (request, response) => {
   const body = request.body;
-  console.log(body)
-  console.log('body.name', body.name)
-  console.log('body.number', body.number)
-  console.log('body.content', body.content)
-
-  if (!body.content) {
+  if (body.name === undefined || body.number === undefined) {
     return response.status(400).json({ 
       error: 'content missing' 
     })
