@@ -1,4 +1,4 @@
 requests/*
 node_modules/*
-.env
 build/*
+.env
