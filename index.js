@@ -15,7 +15,7 @@ const unknownEndpoint = (request, response) => {
 
 //---------------------------------------------------------------------
 // status message
-morgan.token("post-data", (req, res) => {
+morgan.token("post-data", (req) => {
   if (req.method === "POST") {
     return JSON.stringify(req.body);
   } else {
@@ -27,10 +27,13 @@ app.use(morgan(myFormat));
 //---------------------------------------------------------------------
 
 app.get("/info", (request, response) => {
-  response.send(`Phonebook has info for ${persons.length} people
-  <br /><br />
-  ${new Date()}
-  `);
+  Person.find({}).then((persons) => {
+    const personCount = persons.length;
+    response.send(`Phonebook has info for ${personCount} people
+    <br /><br />
+    ${new Date()}
+    `);
+    })
 });
 
 app.get("/api/persons", (request, response) => {
@@ -63,10 +66,6 @@ app.post("/api/persons", (request, response, next) => {
 app.put("/api/persons/:id", (request, response, next) => {
   const body = request.body;
   const { name, number } = body;
-  const person = {
-    name: body.name,
-    number: body.number,
-  };
 
   Person.findByIdAndUpdate(
     request.params.id,
@@ -78,9 +77,9 @@ app.put("/api/persons/:id", (request, response, next) => {
     .catch((error) => next(error));
 });
 
-app.delete("/api/persons/:id", (request, response) => {
+app.delete("/api/persons/:id", (request, response, next) => {
   Person.findByIdAndDelete(request.params.id)
-    .then((result) => {
+    .then(() => {
       response.status(204).end();
     })
     .catch((error) => next(error));
